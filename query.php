@@ -1,3 +1,6 @@
+<?php
+include("config.php");
+?>
 <!Doctype html>
 <html>
     <head>
@@ -10,7 +13,7 @@
         <script src="js/jquery-1.11.3.min (1).js" type="text/javascript"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/script.js" type="text/javascript"></script>
-        <title>home</title>
+        <title>inquiry</title>
     </head>
     <body>
         <div class="b-container">
@@ -22,61 +25,22 @@
                 <div class="col-sm-8">
                     <header class="head1">CLIENT MANAGEMENT SYSTEM</header>
                 </div>
-
+                <?php
+                session_start();
+                $uID = $_SESSION['uID'];
+                $username = $_SESSION['uName'];
+                if ($uID != NULL && $username != NULL) {
+                    echo "<h4 style='color:#6495ED;float:right;'>" . "Logged in as" . " " . $username . "</h4>";
+                } else {
+                    header("location:index.php");
+                }
+                ?>
             </div>
 
             <div class="row">
-                <div id="navbar">    
-                    <nav class="navbar navbar-default navbar-static-top " role="navigation">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-                                <span classlToggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="#" style="color:green;">System Menu</a>
-                        </div>
-
-                        <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                            <ul class="nav navbar-nav">
-                                <li><a href="home.php">HOME</a></li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">OUR*PRODUCTS<b class="caret"></b></a> 
-
-                                    <ul class="dropdown-menu">
-                                        <li><a href="computers.php">Computers</a></li>
-                                        <li><a href="spares.php">Computer Spare Parts</a></li>
-                                        <li><a href="disks.php">Disks</a></li>
-                                        <li><a href="websites.php">Websites</a></li>
-
-                                        <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Software</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#">SACCO</a></li>
-                                                <li><a href="#">Business Support</a></li>
-                                                <li><a href="#">Schools Support</a></li>
-                                                <li><a href="#">Hospital Supports</a></li>
-                                                <li><a href="#">Streamline</a></li>                           
-                                            </ul>
-                                        </li>                                   
-                                    </ul>
-                                </li>
-                                <li class="dropdown"><a href="#">REPAIR*MAINTENACE</a>
-                                </li>
-                                <li class="active"><a href="query.php">INQUIRY/COMPLAINT</a></li>
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">TRAINING<b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Internship</a></li>
-                                        <li><a href="#">Short Courses</a></li>                                
-                                    </ul>
-                                </li>
-                                <a href="index.php">
-                                    <button type="button" class="btn btn-warning" name="logout" style="margin-top:10px; margin-left:340px">LOGOUT</button>
-                                </a>
-                            </ul>
-                        </div><!-- /.navbar-collapse -->
-                    </nav>
-                </div>
+                <?php
+                include 'menu.php';
+                ?>
             </div>
 
             <div class="row">
@@ -85,27 +49,39 @@
                 </div>
                 <div class="col-sm-8 checks" >
                     <form method="POST" action="process.php">
-                        <input type="radio" name="categoryName" value="Installation"/>
+                        <input type="hidden" id="uID" value="<?php echo $uID ?>" name="uID"/>
+                        <input type="checkbox" name="inquiryName[]" value="Installation"/>
                         <label>Installation</label>
 
-                        <input type="radio" name="categoryName" value="Hardware-Failure"/>
+                        <input type="checkbox" name="inquiryName[]" value="Hardware-Failure"/>
                         <label>Hardware Failure</label>
 
-                        <input type="radio" name="categoryName" value="Purchase"/>
+                        <input type="checkbox" name="inquiryName[]" value="Purchase"/>
                         <label>Purchase</label>
 
-                        <input type="radio" name="categoryName" value="Website"/>
+                        <input type="checkbox" name="inquiryName[]" value="Website"/>
                         <label>Website</label>
 
-                        <input type="radio" name="categoryName" value="Training"/>
+                        <input type="checkbox" name="inquiryName[]" value="Training"/>
                         <label>Training</label>
 
-                        <input type="radio" name="categoryName" value="Other"/>
+                        <input type="checkbox" name="inquiryName[]" value="Other"/>
                         <label>Other</label>
 
                         <hr>
+                        <div class="form-group">
+                        <input type="hidden" class="form-control" id="date" name="date" value="<?php echo date('d-m-Y')?>" onclick="myFunction();" required style="width:60%;"/>
+                        </div>
+                        <script>
+                            function myFunction() {
+                                document.getElementById('date').value = Date();
+                            }
+                        </script>
+                        <div class="form-group">
                         <label>Enter Your Description Here:</label>
-                        <textarea class="form-control" rows="5" name="categoryDesc" id="comment"></textarea>
+                        <textarea class="form-control" rows="3" name="inquiryDesc" id="comment" required/></textarea>
+                        </div>
+
                         <button type="submit" class="btn btn-primary" name="submitInquiry">Submit Your Inquiry</button>
                     </form>	
                 </div>

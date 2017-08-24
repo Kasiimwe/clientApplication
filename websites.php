@@ -1,10 +1,10 @@
-<?php
-session_start();
-$uID = $_SESSION['uID'];
-echo $uID;
-?>
 <!Doctype html>
 <html>
+    <?php
+    include("config.php");
+    $selected = mysqli_query($conn, "SELECT * FROM products where productType='website' AND Active!='NULL';");
+//$i = 1;
+    ?>
     <head>
         <meta charset utf ="8">
         <link href="css/webcss.css" rel="Stylesheet">
@@ -15,7 +15,27 @@ echo $uID;
         <script src="js/jquery-1.11.3.min (1).js" type="text/javascript"></script>
         <script src="js/bootstrap.min.js" type="text/javascript"></script>
         <script src="js/script.js" type="text/javascript"></script>
-        <title>home</title>
+        <script type="text/javascript">
+            function paymentnfo() {
+                var radios = document.getElementsByName('paymentMode');
+
+                for (var i = 0, length = radios.length; i < length; i++) {
+                    if (radios[i].checked) {
+                        // do whatever you want with the checked radio
+
+                        if (radios[i].value === "MobileMoney") {
+                            alert("Send the Money to this Number: 0776231019 and add the reason as:Product Name.We will give you feedback");
+                        }
+                        if (radios[i].value === "AccountNo") {
+                            alert("Deposit the money in Housing Finance Bank, Account Number:4356278908, Mbarara branch.We will give you feedback");
+                        }
+                        // only one radio can be logically checked, don't check the rest
+                        break;
+                    }
+                }
+            }
+        </script>
+        <title>Our websites</title>
     </head>
     <body>
         <div class="b-container">
@@ -27,99 +47,57 @@ echo $uID;
                 <div class="col-sm-8">
                     <header class="head1">CLIENT MANAGEMENT SYSTEM</header>
                 </div>
-
+                <?php
+                session_start();
+                $uID = $_SESSION['uID'];
+                $username = $_SESSION['uName'];
+                if ($uID != NULL && $username != NULL) {
+                    echo "<h4 style='color:#6495ED;float:right;'>" . "Logged in as" . " " . $username . "</h4>";
+                } else {
+                    header("location:index.php");
+                }
+                ?>
             </div>
 
             <div class="row">
-                <div id="navbar">    
-                    <nav class="navbar navbar-default navbar-static-top " role="navigation">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-                                <span classlToggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="#" style="color:green;">System Menu</a>
-                        </div>
-
-                        <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                            <ul class="nav navbar-nav">
-                                <li><a href="home.php">HOME</a></li>
-                                <li class="dropdown active">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">OUR*PRODUCTS<b class="caret"></b></a> 
-
-                                    <ul class="dropdown-menu">
-                                        <li><a href="computers.php">Computers</a></li>
-                                        <li><a href="spares.php">Computer Spare Parts</a></li>
-                                        <li><a href="disks.php">Disks</a></li>
-                                        <li><a href="websites.php">Websites</a></li>
-
-                                        <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Software</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#">SACCO</a></li>
-                                                <li><a href="#">Business Support</a></li>
-                                                <li><a href="#">Schools Support</a></li>
-                                                <li><a href="#">Hospital Supports</a></li>
-                                                <li><a href="#">Streamline</a></li>                           
-                                            </ul>
-                                        </li>                                   
-                                    </ul>
-                                </li>
-                                <li class="dropdown"><a href="#">REPAIR*MAINTENACE</a>
-                                </li>
-                                <li><a href="query.php">INQUIRY/COMPLAINT</a></li>
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">TRAINING<b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Internship</a></li>
-                                        <li><a href="#">Short Courses</a></li>                                
-                                    </ul>
-                                </li>
-                                <a href="index.php">
-                                    <button type="button" class="btn btn-warning" name="logout" style="margin-top:10px; margin-left:340px">LOGOUT</button>
-                                </a>
-                            </ul>
-                        </div><!-- /.navbar-collapse -->
-                    </nav>
-                </div>
+                <?php
+                include 'menu.php';
+                ?>
             </div>
 
             <div class="row">
-                <div class="row ">
-                    <div class="col-sm-12">
-                        <p style="color:#228B22;font-size:20px;">What kind of website do you want?</p>
-                        <!-------------------------------------------------------php-------------------------------------------------------------->
+                <div class="col-sm-12">
+                    <p style="color:#228B22;font-size:20px;">What kind of website do you want?</p>
+                    <!-------------------------------------------------------php-------------------------------------------------------------->
+                    <?php
+                    while ($personrow = mysqli_fetch_array($selected)) {
+                        $personid = $personrow['pID'];
+                        $FirstName = $personrow['productName'];
+                        echo "<button class='accordion'>";
+                        echo $personrow['productName'];
+                        echo ' ';
+                        echo $personrow['productType'];
+                        echo "</button>";
+                        echo "<div class='panel'>";
+                        echo "<div class='col-sm-6'>";
+                        ?><p><img src="staff/user_images/<?php echo $personrow['productImage']; ?>" class="img-rounded" width="250" height="200" /></p><?php
+                        echo "</div>";
+                        echo "<div class='col-sm-6'>";
+                        echo "<p>";
+                        echo $personrow['productDesc'];
+                        echo"</p>";
+                        echo"<br/>";
+                        ?>
+                        <button href="" data-toggle="modal" data-target="#<?php echo $personid; ?>" class='btn btn-primary' style='float:right;color:red;' >Click to Order</button>
                         <?php
-                        include("config.php");
+                        echo "</div>";
+                        echo "</div>";
 
-                        $imagesql = "SELECT*FROM products";
-                        $resulte = mysqli_query($conn, $imagesql);
-
-                        while ($row = mysqli_fetch_array($resulte)) {
-                            if ($row["pID"] >= 10) {
-                                echo "<button class='accordion'>";
-                                echo $row["productName"];
-                                echo "</button>";
-                                echo "<div class='panel'>";
-                                echo "<div class='col-sm-6'>";
-                                ?><img src="<?php echo $row["productImage"]; ?>" alt="website" class="img-responsive"><?php
-                                echo "</div>";
-                                echo "<div class='col-sm-6'>";
-                                echo "<p>";
-                                echo $row["productDesc"];
-                                echo"</p>";
-                                echo"<br/>";
-                                echo "<button class='btn btn-warning' style='float:right;'>";
-                                echo"click to order...";
-                                echo"<";
-                                echo "</div>";
-                                echo "</div>";
-                            }
-                        }
-                        ?>					
-                        <!-------------------------------------------------------php-------------------------------------------------------------->					
-                        <script type="text/javascript" src="websitejs/try1.js"></script>	
-                    </div>
+                        include 'modal.php';
+                    }
+                    ?>					
+                    <!-------------------------------------------------------php-------------------------------------------------------------->					
+                    <script type="text/javascript" src="websitejs/try1.js"></script>	
                 </div>
             </div>
             <div class ="row foot">

@@ -1,12 +1,3 @@
-<?php
-session_start();
-$uID = $_SESSION['uID'];
-$username = $_SESSION['userName'];
-echo $uID;
-echo $username;
-?>
-
-
 <!Doctype html>
 <html>
     <head>
@@ -31,60 +22,22 @@ echo $username;
                 <div class="col-sm-8">
                     <header class="head1">CLIENT MANAGEMENT SYSTEM</header>
                 </div>
-
+                <?php
+                session_start();
+                $uID = $_SESSION['uID'];
+                $username = $_SESSION['uName'];
+                if ($uID != NULL && $username != NULL) {
+                    echo "<h4 style='color:#6495ED;float:right;'>" . "Logged in as" . " " . $username . "</h4>";
+                } else {
+                    header("location:index.php");
+                }
+                ?>
             </div>
 
             <div class="row">
-                <div id="navbar">    
-                    <nav class="navbar navbar-default navbar-static-top" role="navigation">
-                        <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a class="navbar-brand" href="#" style="color:green;">System Menu</a>
-                        </div>
-
-                        <div class="collapse navbar-collapse" id="navbar-collapse-1">
-                            <ul class="nav navbar-nav">
-                                <li class="active"><a href="home.php">HOME</a></li>
-                                <li class="dropdown">
-                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">OUR*PRODUCTS<b class="caret"></b></a> 
-
-                                    <ul class="dropdown-menu">
-                                        <li><a href="computers.php">Computers</a></li>
-                                        <li><a href="spares.php">Computer Spare Parts</a></li>
-                                        <li><a href="disks.php">Disks</a></li>
-                                        <li><a href="websites.php">Websites</a></li>
-
-                                        <li class="dropdown dropdown-submenu"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Software</a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href="#">SACCO</a></li>
-                                                <li><a href="#">Business Support</a></li>
-                                                <li><a href="#">Schools Support</a></li>
-                                                <li><a href="#">Hospital Supports</a></li>
-                                                <li><a href="#">Streamline</a></li>                           
-                                            </ul>
-                                        </li>                                   
-                                    </ul>
-                                </li>
-                                <li class="dropdown"><a href="#">REPAIR*MAINTENACE</a>
-                                </li>
-                                <li><a href="query.php">INQUIRY/COMPLAINT</a></li>
-                                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">TRAINING<b class="caret"></b></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Internship</a></li>
-                                        <li><a href="#">Short Courses</a></li>                                
-                                    </ul>
-                                </li>
-                                <a href="process.php?action=logout">
-                                    <button type="button" class="btn btn-warning" name="logout" style="margin-top:10px; margin-left:340px">LOGOUT</button>
-                                </a>
-                            </ul>
-                        </div><!-- /.navbar-collapse -->
-                    </nav>
-                </div>
+                <?php
+                include 'menu.php';
+                ?>
             </div>
             <div class="row">
                 <div class="row">
